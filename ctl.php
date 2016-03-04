@@ -1,7 +1,7 @@
-<?php # Script 9.5 - register.php #2
+<?php 
 // This script performs an INSERT query to add a record to the users table.
 
-$page_title = 'Register';
+$page_title = 'CTL';
 include ('/home/a4731696/public_html/stockReport/htdocs/includes/header.html');
 
 // Check for form submission:
@@ -15,42 +15,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (empty($_POST['id_num'])) {
 		$errors[] = 'You forgot to enter the id tag.';
 	} else {
-		$fs = mysqli_real_escape_string($dbc, trim($_POST['id_num']));
+		$id = mysqli_real_escape_string($dbc, trim($_POST['id_num']));
 	}
 	
-	if (empty($_POST['lot'])) {
-		$errors[] = 'You forgot to enter the daily lot letter.';
+	if (empty($_POST['out_len'])) {
+		$errors[] = 'You forgot to enter the outbound length.';
 	} else {
-		$ln = mysqli_real_escape_string($dbc, trim($_POST['lot']));
+		$ln = mysqli_real_escape_string($dbc, trim($_POST['out_len']));
 	}
 	
 	// Check for a last name:
-	if (empty($_POST['int_wid'])) {
-		$errors[] = 'You forgot to enter the initial width.';
+	if (empty($_POST['out_wid'])) {
+		$errors[] = 'You forgot to enter the outbound width.';
 	} else {
-		$ss = mysqli_real_escape_string($dbc, trim($_POST['int_wid']));
+		$ow = mysqli_real_escape_string($dbc, trim($_POST['out_wid']));
 	}
 	
 	// Check for an email address:
-	if (empty($_POST['int_leng'])) {
-		$errors[] = 'You forgot to enter the initial length.';
+	if (empty($_POST['out_lay'])) {
+		$errors[] = 'You forgot to enter the outbound layer.';
 	} else {
-		$ts = mysqli_real_escape_string($dbc, trim($_POST['int_leng']));
+		$ol = mysqli_real_escape_string($dbc, trim($_POST['out_lay']));
 	}
 	
+	if (empty($_POST['date'])) {
+		$errors[] = 'You forgot to enter the date.';
+	} else {
+		$da = mysqli_real_escape_string($dbc, trim($_POST['date']));
+	}
 		
 	if (empty($errors)) { // If everything's OK.
 	
 		// Register the user in the database...
 		
 		// Make the query:
-		$q = "INSERT INTO preCtl (id_num, lot, int_wid, int_leng) VALUES ('$fs', '$ln', '$ss', '$ts')";		
+		$q = "INSERT INTO ctl (id_num, out_len, out_wid, out_lay, date) VALUES ('$id', '$ln', '$ow', '$ol', '$da')";		
 		$r = @mysqli_query ($dbc, $q); // Run the query.
 		if ($r) { // If it ran OK.
 		
 			// Print a message:
 			echo '<h1>Thank you!</h1>
-		<p>You have updated Initial Footage record.</p><p><br /></p>';	
+		<p>You updated Cut To Length record.</p><p><br /></p>';	
 		
 		} else { // If it did not run OK.
 			
@@ -84,13 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 } // End of the main Submit conditional.
 ?>
-<h1>Initial Footage</h1>
-<form action="register.php" method="post">
-	<p>Id Number: <input type="text" name="id_num" size="15" maxlength="7" value="<?php if (isset($_POST['id_num'])) echo $_POST['id_num']; ?>" />(Should be 7 digits)</p>
-	<p>Daily identifier: <input type="text" name="lot" size="15" maxlength="7" value="<?php if (isset($_POST['lot'])) echo $_POST['lot']; ?>" />(One letter A-Z)</p>
-	<p>Initial Width: <input type="text" name="int_wid" size="15" maxlength="4" value="<?php if (isset($_POST['int_wid'])) echo $_POST['int_wid']; ?>" /></p>
-	<p>Initial Length: <input type="text" name="int_leng" size="15" maxlength="4" value="<?php if (isset($_POST['int_leng'])) echo $_POST['int_leng']; ?>" /></p>
-	
+<h1>Cut To Length</h1>
+<form action="ctl.php" method="post">
+	<p>Id Number: <input type="text" name="id_num" size="15" maxlength="7" value="<?php if (isset($_POST['id_num'])) echo $_POST['id_num']; ?>" />(Seven digit alphanumeric)</p>
+	<p>Outbound Length: <input type="text" name="out_len" size="15" maxlength="7" value="<?php if (isset($_POST['out_len'])) echo $_POST['out_len']; ?>" /></p>
+	<p>Outbound Width: <input type="text" name="out_wid" size="15" maxlength="4" value="<?php if (isset($_POST['out_wid'])) echo $_POST['out_wid']; ?>" /></p>
+	<p>Outbound Layers: <input type="text" name="out_lay" size="15" maxlength="4" value="<?php if (isset($_POST['out_lay'])) echo $_POST['out_lay']; ?>" /></p>
+	<p>Date Processed: <input type="text" name="date" size="15" maxlength="10" value="<?php if (isset($_POST['date'])) echo $_POST['date']; ?>" />(format yyyy-mm-dd)</p> 
 	
 	<p><input type="submit" name="submit" value="Update" /></p>
 </form>

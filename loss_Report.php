@@ -2,15 +2,15 @@
 // This script retrieves all the records from the users table.
 
 $page_title = 'View the Current Users';
-include ('includes/header.html');
+include ('/home/a4731696/public_html/stockReport/htdocs/includes/header.html');
 
 // Page header:
-echo '<h1>Registered Users</h1>';
+echo '<h1>Loss Report</h1>';
 
 require ('../mysqli_connect.php'); // Connect to the db.
 		
 // Make the query:
-$q = "SELECT CONCAT(user_id, ', ', email) AS name, DATE_FORMAT(registration_date, '%M %d, %Y') AS dr FROM users ORDER BY registration_date ASC";		
+$q = "SELECT CONCAT(first_stock, ', ', total_stock) AS name, DATE_FORMAT(registration_date, '%M %d, %Y') AS dr FROM footage ORDER BY date_entered ASC";		
 $r = @mysqli_query ($dbc, $q); // Run the query.
 
 // Count the number of returned rows:
@@ -44,5 +44,5 @@ if ($num > 0) { // If it ran OK, display the records.
 
 mysqli_close($dbc); // Close the database connection.
 
-include ('includes/footer.html');
+include ('/home/a4731696/public_html/stockReport/htdocs/includes/footer.html');
 ?>
